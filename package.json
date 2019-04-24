@@ -1,0 +1,27 @@
+{
+  "name": "sissa-api",
+  "version": "1.0.0",
+  "description": "Back End for Sissa App",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/memo-saldana/SissaAPI.git"
+  },
+  "author": "Memo Saldana (memo-saldana)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/memo-saldana/SissaAPI/issues"
+  },
+  "homepage": "https://github.com/memo-saldana/SissaAPI#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "express-async-handler": "^1.1.4",
+    "mongoose": "^5.4.19",
+    "morgan": "^1.9.1"
+  }
+}
