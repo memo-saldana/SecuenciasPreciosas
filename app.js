@@ -5,7 +5,7 @@ var express = require("express"),
     logger = require('morgan'),
     mongoose = require('mongoose'),
     database = require('./db/dbSetup')(mongoose),
-    indexRoutes = require('./routes/index');
+    indexRoutes = require('./rutas/index');
 var PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({extended: true}))
