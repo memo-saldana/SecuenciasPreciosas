@@ -2,9 +2,6 @@ const mongoose = require('mongoose'),
       Usuario = require('usuario'); 
 
 var instructoraSchema = new mongoose.Schema({
-  institucion: {
-    type: String
-  },
   telefono: {
     type: String
   },
@@ -14,6 +11,10 @@ var instructoraSchema = new mongoose.Schema({
   }],
   sedeActual: {
     type: String
+  },
+  aceptada: {
+    type: Boolean,
+    default: false
   }
 })
 
