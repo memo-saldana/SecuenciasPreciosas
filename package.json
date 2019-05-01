@@ -18,10 +18,16 @@
   "homepage": "https://github.com/memo-saldana/SissaAPI#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "connect-flash": "^0.1.1",
     "dotenv": "^7.0.0",
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-async-handler": "^1.1.4",
+    "express-session": "^1.16.1",
     "mongoose": "^5.4.19",
-    "morgan": "^1.9.1"
+    "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^5.0.1"
   }
 }
