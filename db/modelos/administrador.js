@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'),
-      Usuario = require('usuario'); 
+      Usuario = require('./usuario'); 
 
 var adminSchema = new mongoose.Schema({
   telefono: {

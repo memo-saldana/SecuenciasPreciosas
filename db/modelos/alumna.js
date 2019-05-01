@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'),
-      Usuario = require('usuario'); 
+      Usuario = require('./usuario'); 
 
 var alumnaSchema = new mongoose.Schema({
   nombreTutor: {
@@ -23,7 +23,7 @@ var alumnaSchema = new mongoose.Schema({
   }
 })
 
-alumnaSchema.methods.addEvidencia = function(evidencia){
+alumnaSchema.methods.addEvidencia = async function(evidencia){
   this.evidencias.push(evidencia)
   await this.save()
 }

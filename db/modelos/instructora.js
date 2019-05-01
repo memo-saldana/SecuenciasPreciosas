@@ -10,7 +10,8 @@ var instructoraSchema = new mongoose.Schema({
     ref: "Sede"
   }],
   sedeActual: {
-    type: String
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Sede"
   },
   aceptada: {
     type: Boolean,
