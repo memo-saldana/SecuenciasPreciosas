@@ -10,7 +10,10 @@ var express = require("express"),
     flash = require('connect-flash'),
     mongoose = require('mongoose'),
     database = require('./db/dbSetup')(mongoose),
-    indexRoutes = require('./rutas');
+    indexRoutes = require('./rutas/index'),
+    authRoutes = require('./rutas/auth'),
+    instRoutes = require('./rutas/institucion');
+
 
 var PORT = process.env.PORT || 3000;
 
@@ -41,7 +44,9 @@ app.use(function(req,res, next) {
 })
 
 // Routers
-app.use('/', indexRoutes)
+app.use('/', indexRoutes);
+app.use('/', authRoutes);
+app.use('/instituciones', instRoutes)
 
 // Listener
 app.listen(PORT, () => {

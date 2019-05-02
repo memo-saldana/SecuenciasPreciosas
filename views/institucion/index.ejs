@@ -1,0 +1,19 @@
+<% include ../partials/header %>
+
+<h1>Instituciones!</h1>
+
+<button type="button" class="btn btn-primary">Añadir institución</button>
+
+<p>Listado de las instituciones</p>
+
+
+<% instituciones.forEach( institucion => {%>
+  <div>
+    <h2><%= institucion.name%></h2>
+
+    <button></button>
+  </div>
+<% })%>
+
+
+<% include ../partials/footer %>
