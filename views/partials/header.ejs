@@ -2,11 +2,40 @@
 <html>
 <head>
 	<title>Patrones Hermosos</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">	
+  <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
 </head>
 <body>
-	<div class="navbar navbar-default">
+    <nav class="navbar fixed-top navbar-dark navbar-expand-lg" style="background-color: #F58EA8">
+  <div class="container">
+      <a class="navbar-brand mb-0 h1" href="/">Patrones Hermosos</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        
+          <% if (!currentUser) {%>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Regístrate</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login"> Inicia Sesión</a>
+            </li>
+          <% }else{ %>
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Hola <%= currentUser.nombre %></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"> Log out</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+  </div>
+    </nav>
+  <%if (false) { %>
+  <div class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="/">Patrones Hermosos</a>
@@ -14,7 +43,6 @@
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<% if (!currentUser) { -%>
-
 						<li><a href="/Login">Login</a></li>				
 						<li><a href="/register">Sign up</a></li>				
 						
@@ -26,7 +54,8 @@
 				</ul>
 			</div>
 		</div>
-	</div>
+	</div>  
+  <% } %>
 
   <div class="container">
     <%if (error && error.length >0 ) {%>
@@ -40,3 +69,5 @@
     </div>
     <% } %>
   </div>
+
+  <div class="container">

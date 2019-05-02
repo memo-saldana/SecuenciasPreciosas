@@ -9,3 +9,14 @@
 .delete-form {
 	display: inline;
 }
+
+body {
+  margin-top: 60px;
+}
+
+.card, .btn, .form-control { border-radius: 0; }
+
+.btn-primary { 
+  background-color: #F58EA8;
+  border-color: #F58EA8;
+}
