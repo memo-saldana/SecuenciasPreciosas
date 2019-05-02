@@ -44,24 +44,25 @@ router.post("/register/instructora", aH(async (req,res) => {
     sedePreferencia: req.body.sedePreferencia,
 
   }) 
-  instructor.save()
+  await instructor.save()
   return res.redirect("/")
 }))
 
 router.get("/register/administrador", (req,res) => {
   return res.render("administrador/register");
 })
-router.post("/register/administrador", isMITAdmin, aH(async (req,res) => {
+router.post("/register/administrador", aH(async (req,res) => {
    
-  await Administrador.register( new Administrador({
+  let admin =  new Administrador({
     email: req.body.email,
+    password: req.body.password,
     fechaDeNacimiento: new Date(req.body.fechaDeNacimiento),
     nombre: req.body.nombre,
     telefono: req.body.telefono,
     institucion: req.body.institucion,
     adminType: req.body.adminType
-  }), 
-  req.body.password);
+  })
+  await admin.save();
   return res.redirect("/")
 }))
 
@@ -74,7 +75,7 @@ router.get('/login', (req,res) => {
     } else if(req.user.tipo === "Instructora"){
       return res.redirect("/grupo")
     } else if(req.user.tipo ==="Administrador"){
-      return res.sredirect("/adminPanel")
+      return res.redirect("/adminPanel")
     }
   }
 })
@@ -91,7 +92,7 @@ router.post('/login',passport.authenticate("local",
   } else if(req.user.tipo === "Instructora"){
     return res.redirect("/grupo")
   } else if(req.user.tipo ==="Administrador"){
-    return res.sredirect("/adminPanel")
+    return res.redirect("/adminPanel")
   }
 })
 

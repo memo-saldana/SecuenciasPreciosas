@@ -12,8 +12,8 @@ var express = require("express"),
     database = require('./db/dbSetup')(mongoose),
     indexRoutes = require('./rutas/index'),
     authRoutes = require('./rutas/auth'),
-    instRoutes = require('./rutas/institucion');
-
+    instRoutes = require('./rutas/institucion'),
+    { errorHandler } =require('./services/middleware');
 
 var PORT = process.env.PORT || 3000;
 
@@ -48,6 +48,7 @@ app.use('/', indexRoutes);
 app.use('/', authRoutes);
 app.use('/instituciones', instRoutes)
 
+app.use(errorHandler)
 // Listener
 app.listen(PORT, () => {
   console.log(`${ process.env.PROJECT_NAME } API on port ${ PORT }`)
