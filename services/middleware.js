@@ -55,4 +55,12 @@ mw.isAdmin = (req,res,next) => {
 	return res.redirect("/login")
 }
 
+mw.errorHandler = () => (err,req,res,next) => {
+  console.log("err :", err)
+
+  req.flash("error", err.message);
+
+  res.redirect('/about')
+}
+
 module.exports = mw;
