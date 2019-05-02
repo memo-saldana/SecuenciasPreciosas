@@ -40,22 +40,22 @@ body{
 }
 
 .slideshow li:nth-child(1) { 
-  background-image: url(http://i.imgur.com/K3mPv14.jpg) 
+  background-image: url(https://static.wixstatic.com/media/84770f_df96a384032540738d1321ed071ab8ed~mv2_d_5700_3800_s_4_2.jpg/v1/fill/w_1106,h_737,fp_0.50_0.50,q_90/84770f_df96a384032540738d1321ed071ab8ed~mv2_d_5700_3800_s_4_2.webp?retry=1) 
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(http://i.imgur.com/SBEmFpv.jpg);
+  background-image: url(https://static.wixstatic.com/media/1a1564c50cf14a109423416f14e8381a.jpg/v1/fill/w_1106,h_737,fp_0.50_0.50,q_90/1a1564c50cf14a109423416f14e8381a.webp?retry=1);
   animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(http://i.imgur.com/emvhOnb.jpg);
+  background-image: url(https://static.wixstatic.com/media/84770f_ed362ab51cb94007984856758b66de52~mv2_d_5300_3299_s_4_2.jpg/v1/fill/w_1186,h_737,fp_0.50_0.50,q_90/84770f_ed362ab51cb94007984856758b66de52~mv2_d_5300_3299_s_4_2.webp?retry=1);
   animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(http://i.imgur.com/2LSMCmJ.jpg);
+  background-image: url(https://static.wixstatic.com/media/84770f_f1e01a5da2964553831c5988ab71d368~mv2_d_5600_3735_s_4_2.jpg/v1/fill/w_1106,h_737,fp_0.50_0.50,q_90/84770f_f1e01a5da2964553831c5988ab71d368~mv2_d_5600_3735_s_4_2.webp?retry=1);
   animation-delay: 30s; 
 }
 .slideshow li:nth-child(5) { 
-  background-image: url(http://i.imgur.com/TVGe0Ef.jpg);
+  background-image: url(https://static.wixstatic.com/media/84770f_67312a3f77434df8924e93b85ee49bb8~mv2_d_5700_3800_s_4_2.jpg/v1/fill/w_1106,h_737,fp_0.50_0.50,q_90/84770f_67312a3f77434df8924e93b85ee49bb8~mv2_d_5700_3800_s_4_2.webp?retry=1);
   animation-delay: 40s; 
 }
 
@@ -79,4 +79,9 @@ body{
 /* Older browser support - .no-cssanimations class added by modernizr */
 .no-cssanimations .slideshow li {
 	opacity: 1;
+}
+
+.btn-success { 
+  background-color: #F58EA8;
+  border-color: #F58EA8;
 }
