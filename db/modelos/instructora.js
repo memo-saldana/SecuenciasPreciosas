@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'),
-      Usuario = require('usuario'); 
+      Usuario = require('./usuario'); 
 
 var instructoraSchema = new mongoose.Schema({
   telefono: {

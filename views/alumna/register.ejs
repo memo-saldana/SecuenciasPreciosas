@@ -1,0 +1,18 @@
+
+<% include ../partials/header %>
+
+<h1>Registrate!</h1>
+
+<form action="/register/alumna" method="POST">
+	<input type="text" name="nombre" placeholder="Nombre completo">
+  <input type="text" name="email" placeholder="Email">
+	<input type="password" name="password" placeholder="Password">
+  <input type="date" name="fechaDeNacimiento" placeholder="Fecha de Nacimiento">
+  <input type="number" name="gradoEscolar" placeholder="Grado Escolar">
+  <input type="text" name="nombreTutor" placeholder="Nombre del Tutor">
+  <input type="file" name="cartaPermiso" placeholder="cartaPermiso">
+
+	<button>Sign Up</button>	
+</form>
+
+<% include ../partials/footer %>

@@ -2,35 +2,36 @@ require('dotenv').config()
 var express = require("express"),
     app = express(),
     passport = require('passport'),
-    LocalStrategy = require('passport-local'),
+    cookieParser = require('cookie-parser'),
+    LocalStrategy = require('passport-local').Strategy,
+    Strats = require('./services/passport'),
     bodyParser = require('body-parser'),
     logger = require('morgan'),
     flash = require('connect-flash'),
     mongoose = require('mongoose'),
     database = require('./db/dbSetup')(mongoose),
-    Usuario = require('./db/modelos/usuario'),
-    indexRoutes = require('./rutas/index');
+    indexRoutes = require('./rutas');
 
 var PORT = process.env.PORT || 3000;
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(logger('dev'))
+app.use(logger('dev'));
 app.set("view engine","ejs");
 app.use(flash());
 app.use(express.static('./public'));
-
+// app.use(cookieParser);
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(require("express-session")({
-	secret: "This time Jaina will win because she is a very cute cat.",
+	secret: process.env.SESSION_SECRET,
 	resave: false,
 	saveUninitialized: false
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use( 'local', Strats.local);
 
-passport.initialize();
-passport.use(new LocalStrategy( Usuario.authenticate()));
-
-passport.serializeUser( Usuario.serializeUser() );
-passport.deserializeUser( Usuario.deserializeUser() );
+passport.serializeUser( Strats.serial);
+passport.deserializeUser( Strats.deserial);
 
 app.use(function(req,res, next) {
 	res.locals.currentUser = req.user;
