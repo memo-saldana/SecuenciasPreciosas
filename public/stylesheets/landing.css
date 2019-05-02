@@ -81,7 +81,7 @@ body{
 	opacity: 1;
 }
 
-.btn-success { 
-  background-color: #F58EA8;
-  border-color: #F58EA8;
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #F58EA8 !important;
+    border-color: #F58EA8 !important;
 }
