@@ -8,6 +8,7 @@ strats.local = new LocalStrategy({ usernameField: 'email'}, (email, password, do
     if(err) return done(err, false)
     
     if(!usuario) return done(null, false, {message: "El correo o la contraseña son incorrectos."})
+    if(usuario.tipo=="Instructora" && !usuario.aceptada) return done(null, false, {message: "No has sido aceptada como instructora aun."})
     usuario.comparePassword(password, (err, matches) => {
       if(err) return done(err, false);
       
