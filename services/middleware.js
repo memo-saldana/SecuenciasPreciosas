@@ -30,7 +30,7 @@ mw.isMITAdmin = (req,res,next) => {
 mw.isInstitucionAdmin = (req,res,next) => {
   if(req.isAuthenticated()){
     if( req.user.tipo === "Administrador"){
-      if(req.user.adminType ==="Institucion" || req.user.adminType === "MIT"){
+      if(req.user.adminType ==="Institución" || req.user.adminType === "MIT"){
         return next();
       }
       req.flash("error", "No estas autorizado para hacer eso, contacta un administrador MIT para más ayuda.")
@@ -60,7 +60,16 @@ mw.errorHandler = () => (err,req,res,next) => {
 
   req.flash("error", err.message);
 
-  res.redirect('/about')
+  res.redirect('back')
+}
+
+mw.hasRegisterToken = (req,res,next) => {
+  if(req.query.token){
+    return next();
+  } else {
+    req.flash("error", "No estas autorizado para hacer esoo" )
+    res.redirect('/register');
+  } 
 }
 
 module.exports = mw;

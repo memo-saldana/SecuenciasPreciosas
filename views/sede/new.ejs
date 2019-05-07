@@ -1,9 +1,11 @@
 
 <% include ../partials/header %>
 
-<h1>Registra una institución!</h1>
 
-<form action="/instituciones/" method="POST">
+
+<h1>Registra una sede para <%= institucion.nombre %></h1>
+
+<form action="/instituciones/<%=institucion._id%>/sedes/" method="POST">
   <h2>Tu información</h2>
 	<input type="text" name="nombre" placeholder="Nombre completo">
   <input type="text" name="email" placeholder="Email">
@@ -11,8 +13,11 @@
   <input type="date" name="fechaDeNacimiento" placeholder="Fecha de Nacimiento">
   <input type="number" name="telefono" placeholder="Telefono">
   <br>
-  <h2>Información de la institución</h2>
-  <input type="text" name="nombreInst" placeholder="Nombre">
+  <h2>Información de la sede</h2>
+  <input type="text" name="nombreSede" placeholder="Nombre">
+  <input type="number" name="cupo" placeholder="Cupo">
+  <input type="text" name="direccion" placeholder="Dirección">
+  <input type="number" name="telefonoSede" placeholder="Telefono de la sede">
   <br>
   <br>
 	<button>Sign Up</button>	

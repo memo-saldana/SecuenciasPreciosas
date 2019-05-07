@@ -14,9 +14,7 @@ const options = {
 }
 
 let mailer = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: process.env.EMAIL_PORT,
-  secure: process.env.EMAIL_SECURE,
+  service: process.env.EMAIL_SERVICE,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PW
@@ -34,8 +32,26 @@ serv.sendInvInst = async (email, token) => {
     template: 'invite',
     context: {
       baseURL: process.env.BASE_URL,
-      inviteURL: process.env.BASE_URL+'/register/administrador?token='+token,
-      projectName: process.env.PROJECT_NAME
+      inviteURL: process.env.BASE_URL +'/instituciones/new?token='+token,
+      projectName: process.env.PROJECT_NAME,
+      tipo: "institución"
+    }
+  })
+}
+
+serv.sendInvSede = async (email, token) => {
+  console.log('email :', email);
+  mailer.use('compile', hbs(options))
+  const mail = await mailer.sendMail({
+    from: 'donotreply@patroneshermosos.org',
+    to: email,
+    subject: 'Invitación Patrones Hermosos',
+    template: 'invite',
+    context: {
+      baseURL: process.env.BASE_URL,
+      inviteURL: process.env.BASE_URL +'/instituciones/' + token+'/sedes/new',
+      projectName: process.env.PROJECT_NAME,
+      tipo: 'sede'
     }
   })
 }

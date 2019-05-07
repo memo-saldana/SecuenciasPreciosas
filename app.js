@@ -13,6 +13,7 @@ var express = require("express"),
     indexRoutes = require('./rutas/index'),
     authRoutes = require('./rutas/auth'),
     instRoutes = require('./rutas/institucion'),
+    sedesRoutes = require('./rutas/sede'),
     { errorHandler } =require('./services/middleware');
 
 var PORT = process.env.PORT || 3000;
@@ -46,7 +47,8 @@ app.use(function(req,res, next) {
 // Routers
 app.use('/', indexRoutes);
 app.use('/', authRoutes);
-app.use('/instituciones', instRoutes)
+app.use('/instituciones', instRoutes);
+app.use('/instituciones/:instId/sedes',sedesRoutes);
 
 app.use(errorHandler)
 // Listener

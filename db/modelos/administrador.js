@@ -5,12 +5,18 @@ var adminSchema = new mongoose.Schema({
   telefono: {
     type: String
   },
-  institucion: {
-    type: String
-  },
   adminType: {
     type: String,
-    enum: ['MIT','Institución','Sede']
+    enum: ['MIT','Institución','Sede'],
+    required: [true, "No se especificó tipo de administrador."]
+  },
+  institucion: {
+    type: mongoose.Types.ObjectId,
+    ref: "Institucion"
+  },
+  sede: {
+    type: mongoose.Types.ObjectId,
+    ref: "Sede"
   }
 })
 

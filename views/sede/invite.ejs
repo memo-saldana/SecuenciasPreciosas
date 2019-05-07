@@ -1,0 +1,11 @@
+<% include ../partials/header %>
+
+<h1>Invita a una sede a <%= institucion.nombre %> </h1>
+
+Ingresa un email
+<form action="/instituciones/<%=institucion._id%>/sedes" method="POST">
+  <input type="text" name="email" placeholder="Email">
+  <button>Enviar correo de invitación</button>
+</form>
+
+<% include ../partials/footer %>

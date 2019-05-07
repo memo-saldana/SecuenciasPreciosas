@@ -1,11 +1,13 @@
-var express = require("express"),
-    router = express.Router(),
-    aH = require('express-async-handler'),
-    passport = require('passport'),
-    Alumna = require('../db/modelos/alumna'),
-    Instructora = require('../db/modelos/instructora'),
-    Administrador = require('../db/modelos/administrador'),
-    { isMITAdmin, isLoggedIn , isAdmin} = require('../services/middleware');
+const express = require("express"),
+      router = express.Router({mergeParams: true}),
+      aH = require('express-async-handler'),
+      passport = require('passport'),
+      Alumna = require('../db/modelos/alumna'),
+      Instructora = require('../db/modelos/instructora'),
+      Institucion = require('../db/modelos/institucion'),
+      Sede = require('../db/modelos/sede'),
+      Administrador = require('../db/modelos/administrador'),
+      { isMITAdmin, isLoggedIn , isAdmin, hasRegisterToken } = require('../services/middleware');
 
 router.get('/register',(req,res) => {
   res.render('register');
@@ -48,9 +50,10 @@ router.post("/register/instructora", aH(async (req,res) => {
   return res.redirect("/")
 }))
 
-router.get("/register/administrador", (req,res) => {
-  return res.render("administrador/register");
-})
+router.get("/register/administrador", aH(async (req,res) => {
+  return res.render("administrador/register")
+}))
+
 router.post("/register/administrador", aH(async (req,res) => {
    
   let admin =  new Administrador({
@@ -59,7 +62,6 @@ router.post("/register/administrador", aH(async (req,res) => {
     fechaDeNacimiento: new Date(req.body.fechaDeNacimiento),
     nombre: req.body.nombre,
     telefono: req.body.telefono,
-    institucion: req.body.institucion,
     adminType: req.body.adminType
   })
   await admin.save();
@@ -84,7 +86,7 @@ router.post('/login',passport.authenticate("local",
   {
     failureRedirect: "/login",
     failureFlash: true
-  }),(req,res) => {
+  }), aH(async(req,res) => {
   console.log("Success");
   
   if(req.user.tipo === "Alumna"){
@@ -92,9 +94,22 @@ router.post('/login',passport.authenticate("local",
   } else if(req.user.tipo === "Instructora"){
     return res.redirect("/grupo")
   } else if(req.user.tipo ==="Administrador"){
-    return res.redirect("/adminPanel")
+    if(req.user.adminType == "MIT"){
+      console.log("MIT logging in");
+     return res.redirect("/adminPanel")
+    }
+    else if(req.user.adminType == "Institución"){
+      console.log("Inst logging in");
+      return res.redirect("/instituciones/"+req.user.institucion);
+    } 
+    else {
+      console.log("Inst logging in");
+      const sede = await Sede.find({_id: req.user.sede}).exec();
+      const inst = sede.getInstitucion();
+      res.redirect('/instituciones/'+inst._id+"/sedes/"+sede._id);
+    }
   }
-})
+}))
 
 router.get("/logout", function(req,res) {
     req.logout();
@@ -110,7 +125,7 @@ router.get('/grupo', isLoggedIn, (req,res) => {
   res.render('instructora/grupo');
 })
 
-router.get('/adminPanel', isAdmin, (req,res) => {
+router.get('/adminPanel', isMITAdmin, (req,res) => {
   res.render('administrador/panel');
 })
 

@@ -13,6 +13,10 @@ var sedeSchema = new mongoose.Schema({
   telefono: {
     type: String
   },
+  aceptada: {
+    type: Boolean,
+    default: false
+  },
   grupos:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Grupo"
