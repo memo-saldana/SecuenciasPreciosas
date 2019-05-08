@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<h1>Instructoras por aprobar</h1>
+<br>
+<p>Listado de las Instructoras</p>
+
+
+<% instructoras.forEach( instructora => {%>
+  <div class="container">
+    <h2><%= instructora.nombre %></h2>
+    <p><strong>Correo:</strong> <%= instructora.email %></p>
+    <p><strong>Fecha de Nacimiento:</strong> <%= instructora.fechaDeNacimiento %></p>
+    <p><strong>Teléfono:</strong> <%= instructora.telefono %></p>
+    <p><strong>Seleccionar una sede de las de preferencia: </strong></p>
+    <form action="/instructoras/<%= instructora._id %>" method="post">
+      <div class="form-check">
+        <%instructora.sedePreferencia.forEach( sede => { %>
+          <input type="radio" name="sedeActual" class="form-check-input" value="<%=sede._id%>" required>
+          <label for="" class="form-check-label"><%=sede.nombre %></label>
+        <% }) %>
+      </div>
+      <button type="submit" class="btn btn-primary mt-4">Aprobar instructora</button>
+    </form>
+
+  </div>
+<% })%>
+
+
+<% include ../partials/footer %></br>

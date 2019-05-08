@@ -32,9 +32,10 @@ router.post("/register/alumna", aH(async (req,res) => {
   return res.redirect("/")
 }))
 
-router.get("/register/instructora", (req,res) => {
-  res.render("instructora/register")
-})
+router.get("/register/instructora", aH( async(req,res) => {
+  const sedes = await Sede.find({ aceptada:true })
+  res.render("instructora/register", {sedes})
+}))
 router.post("/register/instructora", aH(async (req,res) => {
    
   let instructor = new Instructora({
@@ -103,9 +104,10 @@ router.post('/login',passport.authenticate("local",
       return res.redirect("/instituciones/"+req.user.institucion);
     } 
     else {
-      console.log("Inst logging in");
-      const sede = await Sede.find({_id: req.user.sede}).exec();
-      const inst = sede.getInstitucion();
+      console.log("Sede logging in");
+      let sede = await Sede.findOne({_id: req.user.sede}).exec();
+      console.log('sede :', sede);
+      let inst = sede.getInstitucion();
       res.redirect('/instituciones/'+inst._id+"/sedes/"+sede._id);
     }
   }

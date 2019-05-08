@@ -14,6 +14,8 @@ var express = require("express"),
     authRoutes = require('./rutas/auth'),
     instRoutes = require('./rutas/institucion'),
     sedesRoutes = require('./rutas/sede'),
+    adminsedesRoutes = require('./rutas/admin'),
+    teacherRoutes = require('./rutas/teacher'),
     { errorHandler } =require('./services/middleware');
 
 var PORT = process.env.PORT || 3000;
@@ -38,7 +40,7 @@ passport.serializeUser( Strats.serial);
 passport.deserializeUser( Strats.deserial);
 
 app.use(function(req,res, next) {
-	res.locals.currentUser = req.user;
+  res.locals.currentUser = req.user;
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success")
 	next();
@@ -49,6 +51,8 @@ app.use('/', indexRoutes);
 app.use('/', authRoutes);
 app.use('/instituciones', instRoutes);
 app.use('/instituciones/:instId/sedes',sedesRoutes);
+app.use('/sedes', adminsedesRoutes);
+app.use('/instructoras',teacherRoutes)
 
 app.use(errorHandler)
 // Listener

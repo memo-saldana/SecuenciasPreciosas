@@ -21,7 +21,7 @@ router.get('/:sedeId', isAdmin, (req,res) => {
   res.render('sede/show')
 })
 
-router.get('/new/invite', aH( async (req,res) => {
+router.get('/new/invite',isInstitucionAdmin, aH( async (req,res) => {
   const instId = req.params.instId;
   console.log('instId :', instId);
   const institucion = await Institucion.findById(instId).exec();
@@ -53,14 +53,14 @@ router.post('/', aH( async (req,res,next) => {
     fechaDeNacimiento: new Date(req.body.fechaDeNacimiento),
     nombre: req.body.nombre,
     telefono: req.body.telefono,
-    adminType: req.query.token,
+    adminType: "Sede",
     sede: sede._id
   })
   await admin.save();
 
   inst.register(sede);
-  
-  res.redirect('/instituciones/'+req.params.instId)
+  req.flash('success', 'Se postulo correctamente la sede! Espere la revision del administrador')
+  res.redirect('/')
 }))
 
 

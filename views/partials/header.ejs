@@ -24,6 +24,11 @@
             <li class="nav-item">
               <a href="/instituciones" class="nav-link">Instituciones</a>
             </li>
+          <% } else if(currentUser && currentUser.tipo == "Sede"){ %>
+            <li class="nav-item">
+              <a href="/instituciones/" class="nav-link">Sede</a>
+            </li>
+
           <% } %>
         </ul>
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">

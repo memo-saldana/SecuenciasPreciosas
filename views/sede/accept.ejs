@@ -1,0 +1,22 @@
+<% include ../partials/header %>
+
+<h1>Sedes por aprobar</h1>
+<br>
+<p>Listado de las Sedes</p>
+
+
+<% sedes.forEach( sede => {%>
+  <div class="container">
+    <h2><%= sede.nombre %></h2>
+    <p><strong>Cupo:</strong> <%= sede.cupo %></p>
+    <p><strong>Dirección:</strong> <%= sede.direccion %></p>
+    <p><strong>Teléfono:</strong> <%= sede.telefono %></p>
+    <form action="/sedes/<%= sede._id %>" method="post">
+    <button type="submit" class="btn btn-primary">Aprobar sede</button>
+    </form>
+
+  </div>
+<% })%>
+
+
+<% include ../partials/footer %>
