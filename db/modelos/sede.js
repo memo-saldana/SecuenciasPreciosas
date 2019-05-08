@@ -24,7 +24,8 @@ var sedeSchema = new mongoose.Schema({
 })
 
 sedeSchema.methods.getInstitucion = async function() {
-  const inst = await mongoose.model("Institucion").find({ sedes: this._id })
+  const inst = await mongoose.model("Institucion").findOne({ sedes: this._id }).exec();
+  return inst
 }
 
 module.exports = mongoose.model('Sede', sedeSchema);
