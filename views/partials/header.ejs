@@ -17,16 +17,22 @@
           <li class="nav-item">
             <a href="/about" class="nav-link">Acerca de</a>
           </li>
-          <%if(currentUser && currentUser.tipo == "Administrador") {%>
+          <%if(currentUser && currentUser.tipo == "Administrador" && currentUser.adminType == "MIT") {%>
             <li class="nav-item">
               <a href="/adminPanel" class="nav-link">Panel</a>
             </li>
             <li class="nav-item">
               <a href="/instituciones" class="nav-link">Instituciones</a>
             </li>
-          <% } else if(currentUser && currentUser.tipo == "Sede"){ %>
+          <% } else if(currentUser && currentUser.tipo == "Administrador" && currentUser.adminType == "Sede"){ %>
             <li class="nav-item">
-              <a href="/instituciones/" class="nav-link">Sede</a>
+              <a href="/instituciones/<%= currentUser.inst._id%>/sedes/<%= currentUser.sed._id %>" class="nav-link">Sede</a>
+            </li>
+
+          <% } else if(currentUser && currentUser.tipo == "Administrador" && currentUser.adminType == "Institución"){%>
+            
+            <li class="nav-item">
+              <a href="/instituciones/<%= currentUser.inst._id%>" class="nav-link">Institución</a>
             </li>
 
           <% } %>

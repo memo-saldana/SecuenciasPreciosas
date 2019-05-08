@@ -1,0 +1,29 @@
+<% include ../partials/header %>
+
+<h1>Cambiar la sede de la instructora</h1>
+<br>
+
+
+  <div class="container">
+    <h2><%= instructora.nombre %></h2>
+    <p><strong>Correo:</strong> <%= instructora.email %></p>
+    <p><strong>Fecha de Nacimiento:</strong> <%= instructora.fechaDeNacimiento %></p>
+    <p><strong>Teléfono:</strong> <%= instructora.telefono %></p>
+    <form class="form-inline" method="POST" action="/instructoras/<%= instructora._id %>">
+      <label class="my-1 mr-2" for="sedeActual"> <strong>Sede:</strong></label>
+      <select name="sedeActual" class="custom-select my-1 mr-sm-2" id="sedeActual">
+        <option value="instructora.sedeActual._id" "selected><%= instructora.sedeActual.nombre %></option>
+        <% sedes.forEach(sede => { %>
+          <%if(sede.nombre != instructora.sedeActual.nombre){ %>
+            <option value="<%= sede._id %>"><%= sede.nombre %></option>
+          <% } %>
+        <% }); %>
+      </select>
+      <br>
+      <button type="submit" class="btn btn-primary mt-4">Cambiar sede instructora</button>
+    </form>
+
+  </div>
+
+
+<% include ../partials/footer %></br>

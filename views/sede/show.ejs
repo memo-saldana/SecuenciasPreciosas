@@ -2,14 +2,42 @@
 
 
   <div>
-    <h2><%= sede.nombre %></h2>
+    <h1><%= sede.nombre %></h1>
     <p><strong>Cupo:</strong> <%= sede.cupo %></p>
     <p><strong>Dirección:</strong> <%= sede.direccion %></p>
     <p><strong>Teléfono:</strong> <%= sede.telefono %></p>
-    <form action="/sedes/<%= sede._id %>" method="post">
-    <button type="submit" class="btn btn-primary">Aprobar sede</button>
-    </form>
 
+    <h2>Grupos</h2>
+    <div class="container">
+      <% if(sede.grupos.length == 0 ){%>
+        <p>No hay grupos para esta sede.</p>
+      <% }%>
+      <% sede.grupos.forEach( grupo => {%>
+
+        <h3><%= grupo.numeroGrupo %></h3>
+        <h4>Salon - <%= grupo.salon %></h4>
+        <h4>Instructora - <%= grupo.instrucotra.nombre %></h4>
+        <h4>Alumnas:</h4>
+        <ul>
+          <% grupo.alumnas.forEach(alumna => { %>
+          <li><%=alumna.nombre %></li>
+          <% }) %>
+        </ul>
+      <% }) %>
+    </div>
+
+    <h2 class="mt-4">Instructoras sin grupo asignado</h2>
+      <div class="container">
+      <% if(instructoras.length == 0 ){%>
+        <p>No hay instructoras sin grupo para esta sede.</p>
+      <% }%>
+    <% instructoras.forEach( instructora => {%>
+        <h2><%= instructora.nombre %></h2>
+        <p><strong>Correo:</strong> <%= instructora.email %></p>
+        <p><strong>Fecha de Nacimiento:</strong> <%= instructora.fechaDeNacimiento %></p>
+        <p><strong>Teléfono:</strong> <%= instructora.telefono %></p>
+    <% })%>
+      </div>
   </div>
 
   <% include ../partials/footer %>

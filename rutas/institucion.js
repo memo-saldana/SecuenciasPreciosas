@@ -3,6 +3,7 @@ const express = require('express'),
       mailer = require('../services/mailer'),
       {isMITAdmin, isInstitucionAdmin } = require('../services/middleware'),
       Sede = require('../db/modelos/sede'),
+      Administrador = require('../db/modelos/administrador'),
       Institucion = require('../db/modelos/institucion'),
       aH = require('express-async-handler');
 
@@ -34,8 +35,13 @@ router.post('/',isMITAdmin, aH(async (req,res,next) => {
 }))
 
 router.get('/:instId', isInstitucionAdmin, aH( async (req,res,next) => {
+  console.log('req.params.instId :', req.params.instId);
   let inst = await Institucion.findById(req.params.instId).populate('sedes').exec();
-
+  // console.log('inst :', inst);
+  if(!inst){
+    req.flash("error", "No se encontró la institución.")
+    return res.redirect('/')
+  } 
   res.render('institucion/show', { institucion: inst});
 }))
 

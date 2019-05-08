@@ -16,7 +16,9 @@ var express = require("express"),
     sedesRoutes = require('./rutas/sede'),
     adminsedesRoutes = require('./rutas/admin'),
     teacherRoutes = require('./rutas/teacher'),
-    { errorHandler } =require('./services/middleware');
+    Institucion = require('./db/modelos/institucion'),
+    Sede = require('./db/modelos/sede'),
+    { errorHandler } = require('./services/middleware');
 
 var PORT = process.env.PORT || 3000;
 
@@ -39,8 +41,18 @@ passport.use( 'local', Strats.local);
 passport.serializeUser( Strats.serial);
 passport.deserializeUser( Strats.deserial);
 
-app.use(function(req,res, next) {
+app.use(async function(req,res, next) {
   res.locals.currentUser = req.user;
+  if(res.locals.currentUser && res.locals.currentUser.tipo == "Administrador" && res.locals.currentUser.adminType != "MIT"){
+    if(res.locals.currentUser.adminType == "Institución"){
+      // console.log('res.locals.currentUser.institucion :', res.locals.currentUser.institucion);
+      res.locals.currentUser.inst = await Institucion.findById(res.locals.currentUser.institucion).exec();
+    } else {
+      res.locals.currentUser.sed = await Sede.findById(res.locals.currentUser.sede).exec();
+      res.locals.currentUser.inst  = await res.locals.currentUser.sed.getInstitucion();
+    }
+  }
+  // console.log('res.locals.currentUser :', res.locals.currentUser);
   res.locals.error = req.flash("error");
   res.locals.success = req.flash("success")
 	next();

@@ -1,0 +1,22 @@
+<% include ../partials/header %>
+
+<h1>Instructoras</h1>
+<br>
+<a class="btn btn-primary mb-4" href="/instructoras/accept" >Ver instructoras por aprobar</a>
+
+<br>
+<p>Listado de las Instructoras</p>
+
+
+<% instructoras.forEach( instructora => {%>
+  <div class="container">
+    <h2><%= instructora.nombre %></h2>
+    <p><strong>Correo:</strong> <%= instructora.email %></p>
+    <p><strong>Fecha de Nacimiento:</strong> <%= instructora.fechaDeNacimiento %></p>
+    <p><strong>Teléfono:</strong> <%= instructora.telefono %></p>
+    <p><strong>Sede actual: </strong><a href="/instituciones/<%= instructora.sedeActual._id%>"><%= instructora.sedeActual.nombre %></a> - <a href="/instructoras/<%= instructora._id%>/editSede">Cambiar Sede de preferencia</a></p>
+  </div>
+<% })%>
+
+
+<% include ../partials/footer %></br>

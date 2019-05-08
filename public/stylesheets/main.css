@@ -14,7 +14,7 @@ body {
   margin-top: 60px;
 }
 
-.card, .btn, .form-control { border-radius: 0; }
+/* .card, .btn, .form-control { border-radius: 0; } */
 
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
     background-color: #F58EA8 !important;

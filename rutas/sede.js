@@ -5,6 +5,8 @@ const express = require('express'),
       Administrador = require('../db/modelos/administrador'),
       Sede = require('../db/modelos/sede'),
       Institucion = require('../db/modelos/institucion'),
+      Grupo = require('../db/modelos/grupo'),
+      Instructora = require('../db/modelos/instructora'),
       aH = require('express-async-handler');
 
 router.get('/', isInstitucionAdmin, (req,res) => {
@@ -17,9 +19,30 @@ router.get('/new', aH( async (req,res,next) => {
     return res.render("sede/new", { institucion:inst });
 }))
 
-router.get('/:sedeId', isAdmin, (req,res) => {
-  res.render('sede/show')
-})
+router.get('/:sedeId', isAdmin,aH( async (req,res) => {
+
+  let sede = await Sede.findById(req.params.sedeId).populate({
+    path:'grupos',
+    model: 'Grupo',
+    populate: {
+      path: 'instructora',
+      model: 'Instructora'
+    }
+  }).exec();
+  console.log('sede :', sede);
+  let inst = sede.grupos.map(grupo =>{
+    console.log('grupo.instructora._id :', grupo.instructora._id);
+    return grupo.instructora._id;
+  }) 
+  console.log('inst :', inst);
+  let instructoras = await Instructora.find({_id: {$nin: inst}, sedeActual: sede._id}).exec();
+  console.log('instructoras :', instructoras);
+  sede.grupos.forEach(grupo => {
+    grupo.alumnas = grupo.getAlumnas();
+  });
+
+  res.render('sede/show', {sede,instructoras})
+}))
 
 router.get('/new/invite',isInstitucionAdmin, aH( async (req,res) => {
   const instId = req.params.instId;

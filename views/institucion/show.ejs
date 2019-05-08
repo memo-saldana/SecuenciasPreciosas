@@ -1,13 +1,15 @@
 <% include ../partials/header %>
 
-<h1><%= institucion.nombre %></h1>
-<br>
-<a class="btn btn-primary mb-4" href="/instituciones/<%=institucion._id%>/sedes/new/invite">Invita a una sede</a>
-<h2>Sedes: </h2>
-<% institucion.sedes.forEach( sede => { %>
+  <h1><%= institucion.nombre %></h1>
+  <br>
+  <a class="btn btn-primary mb-4" href="/instituciones/<%=institucion._id%>/sedes/new/invite">Invita a una sede</a>
+  <h2>Sedes: </h2>
+  <ul>
+    <% institucion.sedes.forEach( sede => { %>
+    
+      <li><%= sede.nombre %> - <a href="/instituciones/<%=institucion._id%>/sedes/<%=sede._id%>">Ver mas</a></li>
 
-  
-
-<% }) %>
+    <% }) %>
+  </ul>
 
 <% include ../partials/footer %>
