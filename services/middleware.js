@@ -55,6 +55,19 @@ mw.isAdmin = (req,res,next) => {
 	return res.redirect("/login")
 }
 
+mw.isSedeInstAdmin = (req,res,next) => {
+  if(req.isAuthenticated()){
+    if( req.user.tipo === "Administrador"){
+      if(req.user.adminType ==="Institución" || req.user.adminType === "Sede"){
+        return next();
+      }
+    }
+    req.flash("error", "No estas autorizado para hacer eso.")
+    return res.redirect("back")
+  }
+  req.flash("error", "Debes iniciar sesión para hacer eso.");
+	return res.redirect("/login")
+}
 mw.errorHandler = () => (err,req,res,next) => {
   console.log("err :", err)
 

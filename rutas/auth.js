@@ -107,7 +107,8 @@ router.post('/login',passport.authenticate("local",
       console.log("Sede logging in");
       let sede = await Sede.findOne({_id: req.user.sede}).exec();
       console.log('sede :', sede);
-      let inst = sede.getInstitucion();
+      let inst = await sede.getInstitucion();
+      console.log('inst in loggin :', inst);
       res.redirect('/instituciones/'+inst._id+"/sedes/"+sede._id);
     }
   }

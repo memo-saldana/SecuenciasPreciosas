@@ -1,4 +1,4 @@
-require('dotenv').config()
+ require('dotenv').config()
 var express = require("express"),
     app = express(),
     passport = require('passport'),
@@ -6,6 +6,7 @@ var express = require("express"),
     LocalStrategy = require('passport-local').Strategy,
     Strats = require('./services/passport'),
     bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
     logger = require('morgan'),
     flash = require('connect-flash'),
     mongoose = require('mongoose'),
@@ -27,6 +28,7 @@ app.set("view engine","ejs");
 app.use(flash());
 app.use(express.static('./public'));
 // app.use(cookieParser);
+app.use(methodOverride("_method"))
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(require("express-session")({
 	secret: process.env.SESSION_SECRET,

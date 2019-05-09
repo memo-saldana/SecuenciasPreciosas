@@ -2,7 +2,8 @@
 
 
   <div>
-    <h1><%= sede.nombre %></h1>
+    <h1 class=""><%= sede.nombre %></h1> 
+    <a class="btn btn-primary mb-4" href="/instituciones/<%= institucion._id%>/sedes/<%= sede._id%>/edit">Editar sede</a>
     <p><strong>Cupo:</strong> <%= sede.cupo %></p>
     <p><strong>Dirección:</strong> <%= sede.direccion %></p>
     <p><strong>Teléfono:</strong> <%= sede.telefono %></p>

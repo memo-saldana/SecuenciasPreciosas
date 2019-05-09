@@ -1,7 +1,7 @@
 const express = require('express'),
       router = express.Router({mergeParams:true}),
       mailer = require('../services/mailer'),
-      { isInstitucionAdmin, isAdmin} = require('../services/middleware'),
+      { isInstitucionAdmin, isAdmin, isSedeInstAdmin } = require('../services/middleware'),
       Administrador = require('../db/modelos/administrador'),
       Sede = require('../db/modelos/sede'),
       Institucion = require('../db/modelos/institucion'),
@@ -29,6 +29,8 @@ router.get('/:sedeId', isAdmin,aH( async (req,res) => {
       model: 'Instructora'
     }
   }).exec();
+  let institucion = await sede.getInstitucion();
+  console.log('institucion :', institucion);
   console.log('sede :', sede);
   let inst = sede.grupos.map(grupo =>{
     console.log('grupo.instructora._id :', grupo.instructora._id);
@@ -41,7 +43,20 @@ router.get('/:sedeId', isAdmin,aH( async (req,res) => {
     grupo.alumnas = grupo.getAlumnas();
   });
 
-  res.render('sede/show', {sede,instructoras})
+  res.render('sede/show', {sede ,instructoras, institucion})
+}))
+
+router.get('/:sedeId/edit',  isSedeInstAdmin, aH( async (req,res,next) => {
+  let sede = await Sede.findById(req.params.sedeId).exec();
+  let institucion = await Institucion.findById(req.params.instId).exec();
+  res.render('sede/edit', {sede, institucion})
+}))
+
+router.put('/:sedeId', isSedeInstAdmin, aH( async (req,res,next) => {
+  console.log('req.body :', req.body);
+  let sede = await Sede.findByIdAndUpdate(req.params.sedeId, req.body, {new:true});
+  req.flash("success", "Se actualizó la sede correctamente");
+  return res.redirect('/instituciones/'+req.params.instId +'/sedes/'+sede._id);
 }))
 
 router.get('/new/invite',isInstitucionAdmin, aH( async (req,res) => {
@@ -60,6 +75,7 @@ router.post('/admin/new',aH(async (req,res) => {
   req.flash("success", "Se envió el correo exitosamente.")
   res.redirect("/");
 }))
+
 router.post('/', aH( async (req,res,next) => {
   const inst = await Institucion.findById(req.params.instId).exec()
   let sede = new Sede({
