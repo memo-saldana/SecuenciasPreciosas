@@ -4,21 +4,39 @@
 
 
 <h1>Registra una sede para <%= institucion.nombre %></h1>
-
+<br>
 
 <form action="/instituciones/<%=institucion._id%>/sedes/" method="POST">
   <h2>Tu información</h2>
-	<input type="text" name="nombre" placeholder="Nombre completo">
-  <input type="text" name="email" placeholder="Email">
-	<input type="password" name="password" placeholder="Password">
-  <input type="date" name="fechaDeNacimiento" placeholder="Fecha de Nacimiento">
-  <input type="number" name="telefono" placeholder="Telefono">
+	<div class="form-group">
+    <input class="form-control" type="text" name="nombre" placeholder="Nombre completo">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="text" name="email" placeholder="Email">
+  </div>
+	<div class="form-group">
+    <input class="form-control" type="password" name="password" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="date" name="fechaDeNacimiento" placeholder="Fecha de Nacimiento">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="number" name="telefono" placeholder="Telefono">
+  </div>
   <br>
   <h2>Información de la sede</h2>
-  <input type="text" name="nombreSede" placeholder="Nombre">
-  <input type="number" name="cupo" placeholder="Cupo">
-  <input type="text" name="direccion" placeholder="Dirección">
-  <input type="number" name="telefonoSede" placeholder="Telefono de la sede">
+  <div class="form-group">
+    <input class="form-control" type="text" name="nombreSede" placeholder="Nombre">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="number" name="cupo" placeholder="Cupo">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="text" name="direccion" placeholder="Dirección">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="number" name="telefonoSede" placeholder="Telefono de la sede">
+  </div>
   <br>
   <br>
 	<button>Sign Up</button>	

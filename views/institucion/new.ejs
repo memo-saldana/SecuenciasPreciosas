@@ -5,16 +5,28 @@
 
 <form action="/instituciones/" method="POST">
   <h2>Tu información</h2>
-	<input type="text" name="nombre" placeholder="Nombre completo">
-  <input type="text" name="email" placeholder="Email">
-	<input type="password" name="password" placeholder="Password">
-  <input type="date" name="fechaDeNacimiento" placeholder="Fecha de Nacimiento">
-  <input type="number" name="telefono" placeholder="Telefono">
+	<div class="form-group">
+    <input class="form-control" type="text" name="nombre" placeholder="Nombre completo">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="text" name="email" placeholder="Email">
+  </div>
+	<div class="form-group">
+    <input class="form-control" type="password" name="password" placeholder="Password">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="date" name="fechaDeNacimiento" placeholder="Fecha de Nacimiento">
+  </div>
+  <div class="form-group">
+    <input class="form-control" type="number" name="telefono" placeholder="Telefono">
+  </div>
   <br>
+  <div class="form-group">
   <h2>Información de la institución</h2>
   <input type="text" name="nombreInst" placeholder="Nombre">
   <br>
   <br>
+  </div>
 	<button>Sign Up</button>	
 </form>
 

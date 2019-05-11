@@ -2,10 +2,16 @@
 
 <h1>Invita a una institución</h1>
 
-Ingresa un email
+  <p>Ingresa un email </p>
 <form action="/instituciones" method="POST">
-  <input type="text" name="email" placeholder="Email">
-  <button>Enviar correo de invitación</button>
+  <div class="form-row align-items-center">
+    <div class="col-3">
+      <input class="form-control" type="text" name="email" placeholder="Email">
+    </div>
+    <div class="col-3">
+      <button class="btn btn-primary">Enviar correo de invitación</button>
+    </div>
+  </div>
 </form>
 
 <% include ../partials/footer %>
