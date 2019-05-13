@@ -1,0 +1,17 @@
+<% include ../partials/header %>
+
+<div class="container">
+  <h1>Grupo <%= grupo.numeroGrupo %></h1>
+  <p><strong>Salon:</strong> <%= grupo.salon %></p>
+  <p><strong>Curso:</strong> <%= grupo.curso.nombre %></p>
+  <a class="btn btn-primary btn-sm" href="/instituciones/<%= instId %>/sedes/<%= sedeId %>/grupos/<%=grupo._id%>/avisos/new">Publicar aviso</a>
+  <h3>Alumnas:</h3>
+  <ul>
+  <% grupo.alumnas.forEach( alumna =>{%>
+    <li><%= alumna.nombre%> - grado <%= alumna.gradoEscolar %></li>
+  <% }) %>
+  </ul>
+</div>
+
+
+<% include ../partials/footer %></br>

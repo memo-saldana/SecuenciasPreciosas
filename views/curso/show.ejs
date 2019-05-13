@@ -1,0 +1,16 @@
+<% include ../partials/header %>
+
+<h1>Bienvenida al curso <%= curso.nombre %>!</h1>
+<p><strong>Fecha de inicio:</strong> <%= curso.fechaInicio %></p>
+<p><strong>Fecha de fin:</strong> <%= curso.fechaFin %></p>
+
+<h2>Avisos:</h2>
+<div class="container">
+<% curso.avisos.forEach( (aviso, i)=>{%>
+  <h3>Aviso <%= i+1 %></h3>
+  <h4><%= aviso.fecha %></h4>
+  <p><%=aviso.texto%></p>
+<% })%>
+</div>
+
+<% include ../partials/footer %>

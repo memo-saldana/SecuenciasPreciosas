@@ -31,6 +31,7 @@ router.post('/:alumnaId/editGrupo', aH( async (req,res,next) => {
   
   const alumna = await Alumna.findByIdAndUpdate(req.params.alumnaId, { grupo: req.body.grupo}, {new: true});
   console.log('alumna :', alumna);
+  req.flash('success','Se agregó la alumna exitosamente!');
   res.redirect('/instituciones/'+req.params.instId + '/sedes/'+req.params.sedeId);
 }))
 module.exports = router;

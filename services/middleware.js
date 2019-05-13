@@ -85,4 +85,16 @@ mw.hasRegisterToken = (req,res,next) => {
   } 
 }
 
+mw.isInstructora = (req,res,next) =>{
+  if(req.isAuthenticated()){
+    if(req.user.tipo === "Instructora"){
+      return next();
+    }
+    req.flash("error", "No estas autorizado para hacer eso.")
+    return res.redirect("back")
+  }
+  req.flash("error", "Debes iniciar sesión para hacer eso.");
+	return res.redirect("/login")
+}
+
 module.exports = mw;

@@ -6,6 +6,7 @@ const express = require("express"),
       Instructora = require('../db/modelos/instructora'),
       Institucion = require('../db/modelos/institucion'),
       Sede = require('../db/modelos/sede'),
+      Grupo = require('../db/modelos/grupo'),
       Administrador = require('../db/modelos/administrador'),
       { isMITAdmin, isLoggedIn , isAdmin, hasRegisterToken } = require('../services/middleware');
 
@@ -13,11 +14,12 @@ router.get('/register',(req,res) => {
   res.render('register');
 })
 
-router.get("/register/alumna", (req,res) => {
+router.get("/register/alumna",aH( async (req,res) => {
   
-  const sede = Sede.find({ $expr: { $gt: ['$cupo','$registrados']}}).exec()
-  res.render("alumna/register")
-})
+  const sedes = await Sede.find({ $expr: { $gt: ['$cupo','$registrados']}}).exec()
+  console.log('sedes :', sedes);
+  res.render("alumna/register", {sedes})
+}))
 router.post("/register/alumna", aH(async (req,res) => {
    
   let alumna =  new Alumna({
@@ -75,31 +77,60 @@ router.post("/register/administrador", aH(async (req,res) => {
   return res.redirect("/")
 }))
 
-router.get('/login', (req,res) => {
+router.get('/login',aH(async (req,res) => {
   if(req.isUnauthenticated()){
     res.render('login')
   } else {
     if(req.user.tipo === "Alumna"){
-      return res.redirect("/curso")
+      if(!req.user.grupo) return res.render('curso/none')
+      const gpo = await Grupo.findById(req.user.grupo).exec();
+      return res.redirect("/cursos/"+ gpo.curso);
     } else if(req.user.tipo === "Instructora"){
-      return res.redirect("/grupo")
+      const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
+      const institucion = await sede.getInstitucion();
+      let inst = sede.grupos.map(gpo => gpo.instructora);
+      let ind = inst.indexOf( i => i == req.user._id )
+      if(ind == -1 ) return res.render('grupo/none')
+      return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+sede.grupos[ind]._id);
     } else if(req.user.tipo ==="Administrador"){
-      return res.redirect("/adminPanel")
+      if(req.user.adminType == "MIT"){
+        console.log("MIT logging in");
+       return res.redirect("/adminPanel")
+      }
+      else if(req.user.adminType == "Institución"){
+        console.log("Inst logging in");
+        return res.redirect("/instituciones/"+req.user.institucion);
+      } 
+      else {
+        console.log("Sede logging in");
+        let sede = await Sede.findOne({_id: req.user.sede}).exec();
+        console.log('sede :', sede);
+        let inst = await sede.getInstitucion();
+        console.log('inst in loggin :', inst);
+        res.redirect('/instituciones/'+inst._id+"/sedes/"+sede._id);
+      }
     }
   }
-})
+}))
 
 router.post('/login',passport.authenticate("local",
   {
     failureRedirect: "/login",
     failureFlash: true
   }), aH(async(req,res) => {
-  console.log("Success");
+  // console.log("Success");
   
   if(req.user.tipo === "Alumna"){
-    return res.redirect("/curso")
+    if(!req.user.grupo) return res.render('curso/none')
+    const gpo = await Grupo.findById(req.user.grupo).exec();
+    return res.redirect("/cursos/"+ gpo.curso);
   } else if(req.user.tipo === "Instructora"){
-    return res.redirect("/grupo")
+    const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
+    const institucion = await sede.getInstitucion();
+    const grupo = await Grupo.findOne({ instructora: req.user._id}).exec();
+    console.log('grupo :', grupo);
+    if(!grupo) return res.render('grupo/none')
+    return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+grupo._id);
   } else if(req.user.tipo ==="Administrador"){
     if(req.user.adminType == "MIT"){
       console.log("MIT logging in");
@@ -126,11 +157,7 @@ router.get("/logout", function(req,res) {
     res.redirect("/");
 })
 
-router.get('/curso', isLoggedIn, (req,res) => {
-  res.render('alumna/curso');
-})
-
-router.get('/grupo', isLoggedIn, (req,res) => {
+router.get('/grupos', isLoggedIn, (req,res) => {
   res.render('instructora/grupo');
 })
 
