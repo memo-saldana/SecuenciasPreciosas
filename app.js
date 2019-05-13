@@ -19,6 +19,7 @@ var express = require("express"),
     adminsedesRoutes = require('./rutas/admin'),
     teacherRoutes = require('./rutas/teacher'),
     grupoRoutes = require('./rutas/grupo'),
+    avisoRoutes = require('./rutas/avisos'),
     alumnaRoutes = require('./rutas/alumna'),
     Institucion = require('./db/modelos/institucion'),
     Sede = require('./db/modelos/sede'),
@@ -72,6 +73,7 @@ app.use('/sedes', adminsedesRoutes);
 app.use('/instructoras',teacherRoutes);
 app.use('/cursos', cursoRoutes);
 app.use('/instituciones/:instId/sedes/:sedeId/grupos', grupoRoutes);
+app.use('/instituciones/:instId/sedes/:sedeId/grupos/:grupoId/avisos', avisoRoutes);
 app.use('/instituciones/:instId/sedes/:sedeId/alumnas', alumnaRoutes);
 app.use(errorHandler);
 

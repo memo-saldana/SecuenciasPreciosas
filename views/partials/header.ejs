@@ -35,7 +35,11 @@
               <a href="/instituciones/<%= currentUser.inst._id%>" class="nav-link">Institución</a>
             </li>
 
-          <% } %>
+          <% } else if(currentUser && currentUser.tipo === "Alumna" ){%>
+            <li class="nav-item">
+              <a href="/grupos/<%= currentUser.grupo%>" class="nav-link">Curso</a>
+            </li>
+          <% }%>
         </ul>
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
         

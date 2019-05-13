@@ -122,8 +122,8 @@ router.post('/login',passport.authenticate("local",
   
   if(req.user.tipo === "Alumna"){
     if(!req.user.grupo) return res.render('curso/none')
-    const gpo = await Grupo.findById(req.user.grupo).exec();
-    return res.redirect("/cursos/"+ gpo.curso);
+    // const gpo = await Grupo.findById(req.user.grupo).exec();
+    return res.redirect("/grupos/"+ req.user.grupo);
   } else if(req.user.tipo === "Instructora"){
     const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
     const institucion = await sede.getInstitucion();
@@ -157,9 +157,13 @@ router.get("/logout", function(req,res) {
     res.redirect("/");
 })
 
-router.get('/grupos', isLoggedIn, (req,res) => {
-  res.render('instructora/grupo');
-})
+router.get('/grupos/:grupoId', isLoggedIn, aH( async (req,res) => {
+  const grupo = await Grupo.findOne({_id:req.params.grupoId}).populate('curso instructora').exec();
+  grupo.avisos = [];
+  grupo.avisos = await grupo.getAvisos();
+  console.log('grupo :', grupo);
+  res.render('curso/show', {grupo});
+}))
 
 router.get('/adminPanel', isMITAdmin, (req,res) => {
   res.render('administrador/panel');

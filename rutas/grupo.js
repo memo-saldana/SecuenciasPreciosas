@@ -1,7 +1,7 @@
 const express = require('express'),
       router = express.Router({mergeParams:true}),
       mailer = require('../services/mailer'),
-      { isInstitucionAdmin, isAdmin, isSedeInstAdmin, isInstructora } = require('../services/middleware'),
+      { isSedeInstAdmin, isInstructora, isLoggedIn } = require('../services/middleware'),
       Administrador = require('../db/modelos/administrador'),
       Sede = require('../db/modelos/sede'),
       Institucion = require('../db/modelos/institucion'),
@@ -12,7 +12,7 @@ const express = require('express'),
 
       
       
-      router.get('/new', isSedeInstAdmin, aH( async (req,res,next) => {
+router.get('/new', isSedeInstAdmin, aH( async (req,res,next) => {
   const sede = await Sede.findById(req.params.sedeId).exec();
   console.log('sede :', sede);
   let inst = sede.grupos.map(grupo =>{
@@ -50,5 +50,6 @@ router.post('/', isSedeInstAdmin, aH( async (req,res,next) => {
   res.redirect('/instructoras/'+req.params.instId + '/sedes/'+req.params.sedeId);
 
 }))
+
 
 module.exports = router;

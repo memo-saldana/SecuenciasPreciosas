@@ -23,7 +23,8 @@ grupoSchema.methods.getAlumnas = async function(){
   return alumnas;
 }
 grupoSchema.methods.getAvisos = async function(){
-  const avisos = await mongoose.model('Aviso').find({grupo:this._id})
+  const avisos = await mongoose.model('Aviso').find({grupo:this._id}).exec();
+  console.log('avisos :', avisos);
   return avisos;
 }
 

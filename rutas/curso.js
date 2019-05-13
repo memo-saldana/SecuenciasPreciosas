@@ -16,15 +16,6 @@ router.get('/new', isMITAdmin, (req,res) => {
   res.render('curso/new')
 })
 
-
-router.get('/:cursoId', isLoggedIn, aH( async (req,res) => {
-  const grupo = await Grupo.findOne({curso:req.params.cursoId}).exec();
-  grupo.avisos = [];
-  grupo.avisos = await grupo.getAvisos();
-  console.log('grupo :', grupo);
-  res.render('grupo/show', {grupo});
-}))
-
 router.post('/', isMITAdmin, aH( async (req,res,next) => {
   let curso = new Curso({
     nombre: req.body.nombre,

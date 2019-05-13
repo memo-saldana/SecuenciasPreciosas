@@ -1,0 +1,14 @@
+<% include ../partials/header %>
+
+<h1>Crear aviso</h1>
+
+<form action="/instituciones/<%= instId%>/sedes/<%= sedeId%>/grupos/<%= grupoId%>/avisos" method="POST">
+  <div class="form-group">
+    <label for="texto"><strong>Cuerpo del anuncio:</strong></label>
+    <textarea class="form-control" name="texto" id="texto" cols="10" rows="3"></textarea>
+  </div>
+  <button class="btn btn-primary">Publicar aviso</button>
+</form>
+
+
+<% include ../partials/footer %></br>
