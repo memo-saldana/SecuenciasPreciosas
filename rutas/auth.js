@@ -14,6 +14,8 @@ router.get('/register',(req,res) => {
 })
 
 router.get("/register/alumna", (req,res) => {
+  
+  const sede = Sede.find({ $expr: { $gt: ['$cupo','$registrados']}}).exec()
   res.render("alumna/register")
 })
 router.post("/register/alumna", aH(async (req,res) => {
@@ -26,9 +28,13 @@ router.post("/register/alumna", aH(async (req,res) => {
     nombreTutor: req.body.nombreTutor,
     telefonoTutor: req.body.telefonoTutor,
     gradoEscolar: req.body.gradoEscolar,
-    cartaPermiso: req.body.cartaPermiso
+    cartaPermiso: req.body.cartaPermiso,
+    sede: req.body.sede
   })
-  alumna.save();
+  await alumna.save();
+
+  await Sede.findByIdAndUpdate(req.body.sede, { $inc: { registrados: 1 }}).exec();
+  
   return res.redirect("/")
 }))
 

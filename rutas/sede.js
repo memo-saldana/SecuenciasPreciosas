@@ -5,6 +5,7 @@ const express = require('express'),
       Administrador = require('../db/modelos/administrador'),
       Sede = require('../db/modelos/sede'),
       Institucion = require('../db/modelos/institucion'),
+      Alumna = require('../db/modelos/alumna'),
       Grupo = require('../db/modelos/grupo'),
       Instructora = require('../db/modelos/instructora'),
       aH = require('express-async-handler');
@@ -39,11 +40,13 @@ router.get('/:sedeId', isAdmin,aH( async (req,res) => {
   console.log('inst :', inst);
   let instructoras = await Instructora.find({_id: {$nin: inst}, sedeActual: sede._id}).exec();
   console.log('instructoras :', instructoras);
-  sede.grupos.forEach(grupo => {
-    grupo.alumnas = grupo.getAlumnas();
-  });
+  let alumnas = await Alumna.find({grupo:null}).exec();
+  for(let grupo of sede.grupos){
+    grupo.alumnas = await grupo.getAlumnas();
+    console.log('grupo :', grupo);
+  }
 
-  res.render('sede/show', {sede ,instructoras, institucion})
+  res.render('sede/show', {sede ,instructoras, institucion, alumnas})
 }))
 
 router.get('/:sedeId/edit',  isSedeInstAdmin, aH( async (req,res,next) => {

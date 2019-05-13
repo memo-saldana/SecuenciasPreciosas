@@ -1,4 +1,4 @@
- require('dotenv').config()
+require('dotenv').config()
 var express = require("express"),
     app = express(),
     passport = require('passport'),
@@ -17,6 +17,8 @@ var express = require("express"),
     sedesRoutes = require('./rutas/sede'),
     adminsedesRoutes = require('./rutas/admin'),
     teacherRoutes = require('./rutas/teacher'),
+    grupoRoutes = require('./rutas/grupo'),
+    alumnaRoutes = require('./rutas/alumna'),
     Institucion = require('./db/modelos/institucion'),
     Sede = require('./db/modelos/sede'),
     { errorHandler } = require('./services/middleware');
@@ -67,8 +69,10 @@ app.use('/instituciones', instRoutes);
 app.use('/instituciones/:instId/sedes',sedesRoutes);
 app.use('/sedes', adminsedesRoutes);
 app.use('/instructoras',teacherRoutes)
+app.use('/instituciones/:instId/sedes/:sedeId/grupos', grupoRoutes);
+app.use('/instituciones/:instId/sedes/:sedeId/alumnas', alumnaRoutes);
+app.use(errorHandler);
 
-app.use(errorHandler)
 // Listener
 app.listen(PORT, () => {
   console.log(`${ process.env.PROJECT_NAME } API on port ${ PORT }`)

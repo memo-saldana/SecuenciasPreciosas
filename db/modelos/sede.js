@@ -20,7 +20,11 @@ var sedeSchema = new mongoose.Schema({
   grupos:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Grupo"
-  }]
+  }],
+  registrados: {
+    type: Number,
+    default: 0
+  }
 })
 
 sedeSchema.methods.getInstitucion = async function() {

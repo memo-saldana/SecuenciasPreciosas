@@ -17,6 +17,10 @@ var alumnaSchema = new mongoose.Schema({
   evidencias: {
     type: [String]
   },
+  sede: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Sede"
+  },
   grupo: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Grupo"

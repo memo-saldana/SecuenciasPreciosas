@@ -10,14 +10,17 @@
 
     <h2>Grupos</h2>
     <div class="container">
+      <% if (currentUser.tipo === "Administrador" && currentUser.adminType === "Sede"){%>
+        <a href="/instituciones/<%= institucion._id %>/sedes/<%= sede._id %>/grupos/new" class="btn btn-primary btn-sm">Crear un grupo nuevo</a>
+      <% } %>
       <% if(sede.grupos.length == 0 ){%>
         <p>No hay grupos para esta sede.</p>
       <% }%>
       <% sede.grupos.forEach( grupo => {%>
 
-        <h3><%= grupo.numeroGrupo %></h3>
+        <h3>Grupo <%= grupo.numeroGrupo %></h3>
         <h4>Salon - <%= grupo.salon %></h4>
-        <h4>Instructora - <%= grupo.instrucotra.nombre %></h4>
+        <h4>Instructora - <%= grupo.instructora.nombre %></h4>
         <h4>Alumnas:</h4>
         <ul>
           <% grupo.alumnas.forEach(alumna => { %>
@@ -33,11 +36,23 @@
         <p>No hay instructoras sin grupo para esta sede.</p>
       <% }%>
     <% instructoras.forEach( instructora => {%>
-        <h2><%= instructora.nombre %></h2>
+        <h3><%= instructora.nombre %></h3>
         <p><strong>Correo:</strong> <%= instructora.email %></p>
         <p><strong>Fecha de Nacimiento:</strong> <%= instructora.fechaDeNacimiento %></p>
         <p><strong>Teléfono:</strong> <%= instructora.telefono %></p>
     <% })%>
+      </div>
+    <h2 class="mt-4">Alumnas sin grupo asignado</h2>
+      <div class="container">
+      <%if (alumnas.length == 0 ) {%>
+        <p>No hay alumnas sin grupo para esta sede.</p>
+      <%}%>
+      <% alumnas.forEach( alumna => { %>
+        <h3><%= alumna.nombre %></h3>
+        <p><strong>Tutor:</strong> <%= alumna.nombreTutor %></p>
+        <p><strong>Grado Escolar:</strong> <%= alumna.gradoEscolar %></p>
+        <a href="/instituciones/<%= institucion._id %>/sedes/<%= sede._id %>/alumnas/<%= alumna._id %>/editGrupo" class="btn btn-primary btn-sm">Asignar grupo</a>
+      <% }) %>
       </div>
   </div>
 

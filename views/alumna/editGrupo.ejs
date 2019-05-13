@@ -1,0 +1,21 @@
+
+<% include ../partials/header %>
+
+<h1>Asigna un grupo</h1>
+<br>
+<h2><%= alumna.nombre %></h2>
+<p><strong>Tutor:</strong> <%= alumna.nombreTutor %></p>
+<p><strong>Grado Escolar:</strong> <%= alumna.gradoEscolar %></p>
+
+<form action="/instituciones/<%= instId%>/sedes/<%= sedeId%>/alumnas/<%= alumna._id %>/editGrupo" method="POST">
+<div class="form-group row">
+    <label class="col-sm-1" for="grupo"><strong>Grupo</strong></label>
+    <select placeholder="Grupo" name="grupo" class="custom-select col-sm-4 my-1 mr-sm-2" id="grupo">
+      <% grupos.forEach(grupo => { %>
+        <option value="<%= grupo._id %>"><%= grupo.numeroGrupo %> - Salon <%= grupo.salon %> con <%= grupo.instructora.nombre %></option>
+      <% }); %>
+    </select>
+  </div>
+  <button class="btn btn-primary">Asignar grupo</button>
+</form>
+<% include ../partials/footer %>
