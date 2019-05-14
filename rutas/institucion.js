@@ -13,7 +13,7 @@ router.get('/', isMITAdmin, aH (async (req,res) => {
   res.render('institucion/index', {instituciones: insts});
 }))
 
-router.get('/new',isMITAdmin, (req,res) => {
+router.get('/new', (req,res) => {
   res.render('institucion/new')
 })
 
