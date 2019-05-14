@@ -14,8 +14,8 @@
     <p><strong>Seleccionar una sede de las de preferencia: </strong></p>
     <form action="/instructoras/<%= instructora._id %>" method="post">
       <div class="form-group mt-4">
-        <label class="col-sm-3" for="sedeActual"><strong>Sede Actual</strong></label>
-        <select required placeholder="Sede Actual" name="sedeActual" class="custom-select col-sm-9 my-1 mr-sm-2" id="sedeActual">
+        <label class="col-sm-2" for="sedeActual"><strong>Sede Actual</strong></label>
+        <select required placeholder="Sede Actual" name="sedeActual" class="custom-select col-sm-7 my-1 mr-sm-2" id="sedeActual">
           <% instructora.sedePreferencia.forEach(sede => { %>
             <option value="<%= sede._id %>"><%= sede.nombre %></option>
           <% }); %>
