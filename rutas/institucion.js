@@ -49,7 +49,7 @@ router.get('/new/invite', isMITAdmin, (req,res) => {
   res.render('institucion/invite');
 })
 
-router.post('/admin/new', isMITAdmin, aH( async (req,res,next) => {
+router.post('/new/invite', isMITAdmin, aH( async (req,res,next) => {
   const {email} = req.body;
   // gen token
   console.log('posted');
