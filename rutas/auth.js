@@ -175,11 +175,6 @@ router.post('/login',passport.authenticate("local",
     else if(req.user.adminType == "Institución"){
       console.log("Inst logging in");
       const inst = await Institucion.findById(req.user.institucion).exec();
-      if(!inst.aceptada){
-        req.flash('error', 'La institución no ha sido aceptada, intentalo de nuevo más tarde.');
-        req.logout();
-        res.redirect('/login')
-      }
       return res.redirect("/instituciones/"+req.user.institucion);
     } 
     else {
