@@ -16,7 +16,7 @@ router.get('/register',(req,res) => {
 
 router.get("/register/alumna",aH( async (req,res) => {
   
-  const sedes = await Sede.find({ $expr: { $gt: ['$cupo','$registrados']}}).exec()
+  const sedes = await Sede.find({ $expr: { $gt: ['$cupo','$registrados'], $eq: [ '$aceptada', true]}}).exec()
   console.log('sedes :', sedes);
   res.render("alumna/register", {sedes})
 }))
@@ -36,7 +36,7 @@ router.post("/register/alumna", aH(async (req,res) => {
   await alumna.save();
 
   await Sede.findByIdAndUpdate(req.body.sede, { $inc: { registrados: 1 }}).exec();
-  
+  req.flash('success', 'Se registró la alumna exitosamente. Espere la aprobación del administrador')
   return res.redirect("/")
 }))
 
