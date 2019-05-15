@@ -3,7 +3,7 @@
 <h1>Invita a una sede a <%= institucion.nombre %> </h1>
 
 Ingresa un email
-<form action="/instituciones/<%=institucion._id%>/sedes" method="POST">
+<form action="/instituciones/<%=institucion._id%>/sedes/admin/new" method="POST">
   <div class="form-row align-items-center">
       <div class="col-3">
         <input class="form-control" type="text" name="email" placeholder="Email">

@@ -13,7 +13,7 @@ const express = require('express'),
       
       
 router.get('/new', isSedeInstAdmin, aH( async (req,res,next) => {
-  const sede = await Sede.findById(req.params.sedeId).exec();
+  const sede = await Sede.findById(req.params.sedeId).populate('grupos').exec();
   console.log('sede :', sede);
   let inst = sede.grupos.map(grupo =>{
     console.log('grupo.instructora :', grupo.instructora);
@@ -46,8 +46,11 @@ router.post('/', isSedeInstAdmin, aH( async (req,res,next) => {
   console.log('grupo :', grupo);
   sede.grupos.push(grupo._id);
   await sede.save();
+
+  console.log("sede saved");
+  
   req.flash('success','Se creó el grupo exitosamente!')
-  res.redirect('/instructoras/'+req.params.instId + '/sedes/'+req.params.sedeId);
+  res.redirect('/instituciones/'+req.params.instId + '/sedes/'+req.params.sedeId);
 
 }))
 

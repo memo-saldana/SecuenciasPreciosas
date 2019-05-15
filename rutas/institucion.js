@@ -13,16 +13,16 @@ router.get('/', isMITAdmin, aH (async (req,res) => {
   res.render('institucion/index', {instituciones: insts});
 }))
 
-router.get('/new',isMITAdmin, (req,res) => {
+router.get('/new', (req,res) => {
   res.render('institucion/new')
 })
 
 router.post('/',isMITAdmin, aH(async (req,res,next) => {
   let inst = new Institucion({
-    nombre: req.body.nombre
+    nombre: req.body.nombreInst
   })
   await inst.save();
-    let admin =  new Administrador({
+  let admin =  new Administrador({
     email: req.body.email,
     password: req.body.password,
     fechaDeNacimiento: new Date(req.body.fechaDeNacimiento),
@@ -31,6 +31,7 @@ router.post('/',isMITAdmin, aH(async (req,res,next) => {
     adminType: "Institución",
     institucion: inst._id
   })
+  await admin.save();
   res.redirect('/instituciones')
 }))
 

@@ -7,6 +7,7 @@ const express = require("express"),
       Institucion = require('../db/modelos/institucion'),
       Sede = require('../db/modelos/sede'),
       Grupo = require('../db/modelos/grupo'),
+      ObjectId = require('mongoose').Types.ObjectId,
       Administrador = require('../db/modelos/administrador'),
       { isMITAdmin, isLoggedIn , isAdmin, hasRegisterToken } = require('../services/middleware');
 
@@ -16,7 +17,14 @@ router.get('/register',(req,res) => {
 
 router.get("/register/alumna",aH( async (req,res) => {
   
-  const sedes = await Sede.find({ $expr: { $gt: ['$cupo','$registrados']}}).exec()
+  const sedes = await Sede.aggregate([
+    {
+      $match: {
+        aceptada: true,
+        $expr: { $gt: ['$cupo', '$registrados'] }
+      }
+    }
+  ]).exec()
   console.log('sedes :', sedes);
   res.render("alumna/register", {sedes})
 }))
@@ -36,7 +44,7 @@ router.post("/register/alumna", aH(async (req,res) => {
   await alumna.save();
 
   await Sede.findByIdAndUpdate(req.body.sede, { $inc: { registrados: 1 }}).exec();
-  
+  req.flash('success', 'Se registró la alumna exitosamente. Espere la aprobación del administrador')
   return res.redirect("/")
 }))
 
@@ -82,15 +90,24 @@ router.get('/login',aH(async (req,res) => {
     res.render('login')
   } else {
     if(req.user.tipo === "Alumna"){
-      if(!req.user.grupo) return res.render('curso/none')
+      if(!req.user.grupo){
+        req.flash('error', 'No se encontró ningun curso. Inténtalo nuevamente más tarde.');
+        req.logout();
+        return res.redirect('/login')
+      } 
       const gpo = await Grupo.findById(req.user.grupo).exec();
       return res.redirect("/cursos/"+ gpo.curso);
     } else if(req.user.tipo === "Instructora"){
+
       const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
       const institucion = await sede.getInstitucion();
       let inst = sede.grupos.map(gpo => gpo.instructora);
       let ind = inst.indexOf( i => i == req.user._id )
-      if(ind == -1 ) return res.render('grupo/none')
+      if(ind == -1 ){
+        req.flash('error', 'No se encontró ningun grupo. Inténtalo nuevamente más tarde.');
+        req.logout();
+        return res.redirect('/login')
+      }
       return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+sede.grupos[ind]._id);
     } else if(req.user.tipo ==="Administrador"){
       if(req.user.adminType == "MIT"){
@@ -121,16 +138,31 @@ router.post('/login',passport.authenticate("local",
   // console.log("Success");
   
   if(req.user.tipo === "Alumna"){
-    if(!req.user.grupo) return res.render('curso/none')
-    // const gpo = await Grupo.findById(req.user.grupo).exec();
-    return res.redirect("/grupos/"+ req.user.grupo);
+    if(!req.user.grupo){
+      req.flash('error', 'No se encontró ningun curso. Inténtalo nuevamente más tarde.');
+      req.logout();
+      return res.redirect('/login')
+    } 
+    const gpo = await Grupo.findById(req.user.grupo).exec();
+    return res.redirect("/grupos/"+ gpo._id);
   } else if(req.user.tipo === "Instructora"){
+
     const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
     const institucion = await sede.getInstitucion();
-    const grupo = await Grupo.findOne({ instructora: req.user._id}).exec();
-    console.log('grupo :', grupo);
-    if(!grupo) return res.render('grupo/none')
-    return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+grupo._id);
+    // console.log('sede :', sede);
+    // console.log('typeof(req.user._id) :', typeof(req.user._id));
+    let ind = sede.grupos.find(gpo => {
+      // console.log('gpo.instructora instanceof ObjectId :', gpo.instructora instanceof ObjectId);
+      // console.log('req.user._id instanceof ObjectId :', req.user._id instanceof ObjectId);
+      return gpo.instructora.equals(req.user._id)
+    })
+    // console.log('ind :', ind);
+    if(!ind){
+      req.flash('error', 'No se encontró ningun grupo. Inténtalo nuevamente más tarde.');
+      req.logout();
+      return res.redirect('/login')
+    }
+    return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+ind._id);
   } else if(req.user.tipo ==="Administrador"){
     if(req.user.adminType == "MIT"){
       console.log("MIT logging in");
@@ -138,12 +170,24 @@ router.post('/login',passport.authenticate("local",
     }
     else if(req.user.adminType == "Institución"){
       console.log("Inst logging in");
+      const inst = await Institucion.findById(req.user.institucion).exec();
+      if(!inst.aceptada){
+        req.flash('error', 'La institución no ha sido aceptada, intentalo de nuevo más tarde.');
+        req.logout();
+        res.redirect('/login')
+      }
       return res.redirect("/instituciones/"+req.user.institucion);
     } 
     else {
       console.log("Sede logging in");
       let sede = await Sede.findOne({_id: req.user.sede}).exec();
       console.log('sede :', sede);
+
+      if(!sede.aceptada){
+        req.flash('error', 'La sede aun no ha sido aceptada, intentalo de nuevo más tarde.');
+        req.logout();
+        return res.redirect('/login')
+      } 
       let inst = await sede.getInstitucion();
       console.log('inst in loggin :', inst);
       res.redirect('/instituciones/'+inst._id+"/sedes/"+sede._id);
