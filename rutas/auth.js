@@ -106,8 +106,7 @@ router.get('/login',aH(async (req,res) => {
         req.flash('error', 'No se encontró ningun grupo. Inténtalo nuevamente más tarde.');
         req.logout();
         return res.redirect('/login')
-      } 
-      return res.render('grupo/none')
+      }
       return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+sede.grupos[ind]._id);
     } else if(req.user.tipo ==="Administrador"){
       if(req.user.adminType == "MIT"){
