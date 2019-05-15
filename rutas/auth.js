@@ -143,7 +143,7 @@ router.post('/login',passport.authenticate("local",
       return res.redirect('/login')
     } 
     const gpo = await Grupo.findById(req.user.grupo).exec();
-    return res.redirect("/cursos/"+ gpo.curso);
+    return res.redirect("/grupos/"+ gpo._id);
   } else if(req.user.tipo === "Instructora"){
 
     const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
