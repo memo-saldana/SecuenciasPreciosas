@@ -89,15 +89,25 @@ router.get('/login',aH(async (req,res) => {
     res.render('login')
   } else {
     if(req.user.tipo === "Alumna"){
-      if(!req.user.grupo) return res.render('curso/none')
+      if(!req.user.grupo){
+        req.flash('error', 'No se encontró ningun curso. Inténtalo nuevamente más tarde.');
+        req.logout();
+        return res.redirect('/login')
+      } 
       const gpo = await Grupo.findById(req.user.grupo).exec();
       return res.redirect("/cursos/"+ gpo.curso);
     } else if(req.user.tipo === "Instructora"){
+
       const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
       const institucion = await sede.getInstitucion();
       let inst = sede.grupos.map(gpo => gpo.instructora);
       let ind = inst.indexOf( i => i == req.user._id )
-      if(ind == -1 ) return res.render('grupo/none')
+      if(ind == -1 ){
+        req.flash('error', 'No se encontró ningun grupo. Inténtalo nuevamente más tarde.');
+        req.logout();
+        return res.redirect('/login')
+      } 
+      return res.render('grupo/none')
       return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+sede.grupos[ind]._id);
     } else if(req.user.tipo ==="Administrador"){
       if(req.user.adminType == "MIT"){
