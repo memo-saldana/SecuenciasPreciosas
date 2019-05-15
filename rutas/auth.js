@@ -7,6 +7,7 @@ const express = require("express"),
       Institucion = require('../db/modelos/institucion'),
       Sede = require('../db/modelos/sede'),
       Grupo = require('../db/modelos/grupo'),
+      ObjectId = require('mongoose').Types.ObjectId,
       Administrador = require('../db/modelos/administrador'),
       { isMITAdmin, isLoggedIn , isAdmin, hasRegisterToken } = require('../services/middleware');
 
@@ -148,14 +149,20 @@ router.post('/login',passport.authenticate("local",
 
     const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
     const institucion = await sede.getInstitucion();
-    let inst = sede.grupos.map(gpo => gpo.instructora);
-    let ind = inst.indexOf( i => i == req.user._id )
-    if(ind == -1 ){
+    // console.log('sede :', sede);
+    // console.log('typeof(req.user._id) :', typeof(req.user._id));
+    let ind = sede.grupos.find(gpo => {
+      // console.log('gpo.instructora instanceof ObjectId :', gpo.instructora instanceof ObjectId);
+      // console.log('req.user._id instanceof ObjectId :', req.user._id instanceof ObjectId);
+      return gpo.instructora.equals(req.user._id)
+    })
+    // console.log('ind :', ind);
+    if(!ind){
       req.flash('error', 'No se encontró ningun grupo. Inténtalo nuevamente más tarde.');
       req.logout();
       return res.redirect('/login')
     }
-    return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+sede.grupos[ind]._id);
+    return res.redirect("/instituciones/" + institucion._id + "/sedes/"+sede._id+"/grupos/"+ind._id);
   } else if(req.user.tipo ==="Administrador"){
     if(req.user.adminType == "MIT"){
       console.log("MIT logging in");
