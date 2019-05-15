@@ -16,7 +16,14 @@ router.get('/register',(req,res) => {
 
 router.get("/register/alumna",aH( async (req,res) => {
   
-  const sedes = await Sede.find({ $expr: { $gt: ['$cupo','$registrados'], $eq: [ '$aceptada', true]}}).exec()
+  const sedes = await Sede.aggregate([
+    {
+      $match: {
+        aceptada: true,
+        $expr: { $gt: ['$cupo', '$registrados'] }
+      }
+    }
+  ]).exec()
   console.log('sedes :', sedes);
   res.render("alumna/register", {sedes})
 }))
