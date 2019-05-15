@@ -12,7 +12,7 @@
     <form class="form-inline" method="POST" action="/instructoras/<%= instructora._id %>">
       <label class="my-1 mr-2" for="sedeActual"> <strong>Sede:</strong></label>
       <select name="sedeActual" class="custom-select my-1 mr-sm-2" id="sedeActual">
-        <option value="instructora.sedeActual._id" "selected><%= instructora.sedeActual.nombre %></option>
+        <option value="<%=instructora.sedeActual._id%>" "selected><%= instructora.sedeActual.nombre %></option>
         <% sedes.forEach(sede => { %>
           <%if(sede.nombre != instructora.sedeActual.nombre){ %>
             <option value="<%= sede._id %>"><%= sede.nombre %></option>
