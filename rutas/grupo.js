@@ -39,7 +39,8 @@ router.post('/', isSedeInstAdmin, aH( async (req,res,next) => {
   let grupo = new Grupo({
     numeroGrupo: count,
     salon: req.body.salon,
-    instructora: req.body.instructora
+    instructora: req.body.instructora,
+    curso: req.body.curso
   })
   
   await grupo.save();

@@ -146,7 +146,11 @@ router.post('/login',passport.authenticate("local",
     const gpo = await Grupo.findById(req.user.grupo).exec();
     return res.redirect("/grupos/"+ gpo._id);
   } else if(req.user.tipo === "Instructora"){
-
+    if(!req.user.aceptada){
+      req.flash('error', 'No has sido aceptada aún, intentalo de nuevo más tarde.');
+      req.logout();
+      return res.redirect('/login')
+    }
     const sede = await Sede.findById(req.user.sedeActual).populate('grupos').exec();
     const institucion = await sede.getInstitucion();
     // console.log('sede :', sede);
